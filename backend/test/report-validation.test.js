@@ -14,16 +14,23 @@ test('accepts a genuine zero score, rejects missing score, empty questions, bad 
     }
 })
 
-test('does not highlight known skills, including aliases, and keeps suggestions out of the clean resume', () => {
+test('adds new skills directly to the normal resume and preserves the highlighted review', () => {
     const draft = { name: 'Example', skills: [{ category: 'Languages', items: 'C++, SQL' }] }
     const suggestions = ['React.js', 'JS', 'C++', 'Docker', 'Docker'].map(skill => ({ skill, recommendation: 'Build a small project to practice this skill.' }))
     draft.suggestedAdditions = filterNewSuggestions(suggestions, 'Built React apps using JavaScript.', draft)
     assert.deepEqual(draft.suggestedAdditions.map(item => item.skill), ['Docker'])
+    const before = JSON.stringify(draft)
     const clean = renderResumeLatex(draft)
     const review = renderResumeLatex(draft, { highlighted: true })
-    assert(!clean.includes('Docker'))
+    assert(clean.includes('\\textbf{Technologies:} Docker'))
+    assert(clean.includes('C++, SQL'))
+    assert(!clean.includes('AI suggestions to review'))
+    assert(!clean.includes('Build a small project'))
+    assert(!clean.includes('\\colorbox{AIHighlight}'))
+    assert(!review.includes('\\textbf{Technologies:} Docker'))
     assert(review.includes('\\colorbox{AIHighlight}{\\strut Docker}'))
     assert(!review.includes('\\colorbox{AIHighlight}{\\strut React'))
     assert(!review.includes('\\colorbox{AIHighlight}{\\strut C'))
     assert(review.includes('not claimed qualifications'))
+    assert.equal(JSON.stringify(draft), before)
 })

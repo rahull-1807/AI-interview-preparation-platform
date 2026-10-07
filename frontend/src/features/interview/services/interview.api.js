@@ -1,3 +1,5 @@
+import { validatePdfBlob } from './pdf-download.js';
+
 export const generateInterviewReport = async ({ jobDescription, selfDescription, resumeFile }) => {
     const formData = new FormData();
     formData.append("jobDescription", jobDescription);
@@ -46,7 +48,16 @@ export const generateResumePdf = async (interviewReportId, highlighted = false) 
         const error = await response.json().catch(() => ({}));
         throw new Error(error.message || 'Failed to generate resume PDF');
     }
-    return response.blob();
+    if (!response.headers.get('content-type')?.toLowerCase().startsWith('application/pdf')) {
+        throw new Error('The server did not return a PDF. Please try again.');
+    }
+    const pdf = await response.blob();
+    await validatePdfBlob(pdf);
+    const declaredLength = response.headers.get('content-length');
+    if (declaredLength && !response.headers.get('content-encoding') && Number(declaredLength) !== pdf.size) {
+        throw new Error('The PDF download was interrupted. Please try again.');
+    }
+    return pdf;
 }
 
 export const regenerateInterviewReport = async (interviewId) => {

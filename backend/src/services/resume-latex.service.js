@@ -1,5 +1,6 @@
 const fs = require('node:fs')
 const path = require('node:path')
+const { filterNewSuggestions } = require('./resume-review.service')
 
 const template = fs.readFileSync(path.join(__dirname, '../templates/resume.tex'), 'utf8')
 
@@ -15,6 +16,15 @@ function escapeLatex(value = '') {
 }
 
 function renderResumeLatex(data, { highlighted = false } = {}) {
+    // Build a separate view so downloading the application resume never changes
+    // the cached factual draft used by the highlighted review.
+    const skills = [...(data.skills || [])]
+    if (!highlighted) {
+        const additions = filterNewSuggestions(data.suggestedAdditions || [], '', data)
+        if (additions.length) {
+            skills.push({ category: 'Technologies', items: additions.map(item => item.skill).join(', ') })
+        }
+    }
     const text = escapeLatex
     const section = (title, body) => `\\section{\\textbf{${title}}}\n${body}`
     const list = items => `\\resumeSubHeadingListStart\n${items.join('\n')}\n\\resumeSubHeadingListEnd`
@@ -34,7 +44,7 @@ function renderResumeLatex(data, { highlighted = false } = {}) {
         if (project.url) details.push(`\\textcolor{RoyalBlue}{${text(project.url)}}`)
         return `\\resumeProjectHeading{${details.join(' $|$ ')}}{${text(project.dates)}}\n${bullets(project.bullets)}`
     }))))
-    if (data.skills?.length) parts.push(section('Skills', `\\small{\n${data.skills.map(skill => `\\textbf{${text(skill.category)}:} ${text(skill.items)}`).join(' \\\\\n')}\n}`))
+    if (skills.length) parts.push(section('Skills', `\\small{\n${skills.map(skill => `\\textbf{${text(skill.category)}:} ${text(skill.items)}`).join(' \\\\\n')}\n}`))
     if (data.achievements?.length) parts.push(section('Achievements', bullets(data.achievements)))
     if (highlighted) {
         const suggestions = data.suggestedAdditions || []

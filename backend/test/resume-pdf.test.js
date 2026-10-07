@@ -49,6 +49,12 @@ test('download returns a PDF attachment for the report owner', async () => {
         assert.equal(result.headers['Content-Type'], 'application/pdf')
         assert.match(result.headers['Content-Disposition'], /resume_report\.pdf$/)
         assert.equal(result.body.subarray(0, 5).toString(), '%PDF-')
+        const cleanParser = new PDFParse({ data: result.body })
+        try {
+            const clean = await cleanParser.getText()
+            assert.match(clean.text, /Skills\s+Technologies:\s+Docker/)
+            assert.doesNotMatch(clean.text, /suggestions|practice|claimed qualifications/)
+        } finally { await cleanParser.destroy() }
 
         const review = response()
         await controller.generateResumePdfController({ params: { interviewReportId: 'report' }, user: { id: 'owner' }, query: { highlighted: 'true' } }, review)

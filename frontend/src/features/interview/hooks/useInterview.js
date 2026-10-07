@@ -2,6 +2,7 @@ import { getAllInterviewReports, generateInterviewReport, getInterviewReportById
 import { useContext, useEffect, useState, useCallback } from "react"
 import { InterviewContext } from "../interview.context.js"
 import { useParams } from "react-router"
+import { savePdfBlob } from '../services/pdf-download.js'
 
 
 export const useInterview = () => {
@@ -74,15 +75,7 @@ export const useInterview = () => {
         setDownloading(highlighted ? 'highlighted' : 'normal')
         try {
             const response = await generateResumePdf(interviewReportId, highlighted)
-            const url = window.URL.createObjectURL(response)
-            const link = document.createElement("a")
-            link.href = url
-            link.setAttribute("download", `resume_${interviewReportId}${highlighted ? '_highlighted' : ''}.pdf`)
-            document.body.appendChild(link)
-            link.click()
-            link.remove()
-            // Keep the blob alive until the browser has started the download.
-            window.setTimeout(() => window.URL.revokeObjectURL(url), 60000)
+            savePdfBlob(response, `resume_${interviewReportId}${highlighted ? '_highlighted' : ''}.pdf`)
         }
         catch (error) {
             setError(error.message)
