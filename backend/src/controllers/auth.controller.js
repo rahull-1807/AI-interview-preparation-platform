@@ -3,6 +3,13 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const tokenBlacklistModel = require("../models/blacklist.model")
 
+const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/'
+}
+
 /**
  * @route POST /api/auth/register
  * @desc Register a new user
@@ -31,7 +38,7 @@ async function registerUserController(req, res) {
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1d' })
         
-        res.cookie('token', token, { httpOnly: true })
+        res.cookie('token', token, cookieOptions)
         res.status(201).json({ message: "User registered successfully", user: { id: user._id, username: user.username, email: user.email }, token })
 
     } catch (error) {
@@ -60,7 +67,7 @@ async function loginUserController(req, res) {
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1d' })
         
-        res.cookie('token', token, { httpOnly: true })
+        res.cookie('token', token, cookieOptions)
         res.status(200).json({ message: "Logged in successfully", user: { id: user._id, username: user.username, email: user.email }, token })
 
     } catch (error) {
@@ -75,7 +82,7 @@ async function logoutUserController(req, res) {
         if (token) {
             await tokenBlacklistModel.create({ token })
         }
-        res.clearCookie('token')
+        res.clearCookie('token', cookieOptions)
         res.status(200).json({ message: "Logged out successfully" })
     } catch (error) {
         res.status(500).json({ message: "Internal server error" })
