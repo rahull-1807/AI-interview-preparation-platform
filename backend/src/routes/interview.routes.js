@@ -20,6 +20,7 @@ interviewRouter.post("/", authMiddleware.authUser, upload.single("resume"), inte
  * @access private
  */
 interviewRouter.get("/report/:interviewId", authMiddleware.authUser, interviewController.getInterviewReportByIdController)
+interviewRouter.post("/report/:interviewId/regenerate", authMiddleware.authUser, interviewController.regenerateInterviewReportController)
 
 
 /**
@@ -31,8 +32,8 @@ interviewRouter.get("/", authMiddleware.authUser, interviewController.getAllInte
 
 
 /**
- * @route GET /api/interview/resume/pdf
- * @description generate resume pdf on the basis of user self description, resume content and job description.
+ * @route POST /api/interview/resume/pdf/:interviewReportId
+ * @description generate resume LaTeX on the basis of user self description, resume content and job description.
  * @access private
  */
 interviewRouter.post("/resume/pdf/:interviewReportId", authMiddleware.authUser, interviewController.generateResumePdfController)

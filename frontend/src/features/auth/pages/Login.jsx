@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, Link } from 'react-router'
 import "../auth.form.scss"
 import { useAuth } from '../hooks/useAuth'
@@ -8,6 +8,7 @@ const Login = () => {
     const { loading, handleLogin } = useAuth()
     const navigate = useNavigate()
 
+    const [showPassword, setShowPassword] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
@@ -23,30 +24,29 @@ const Login = () => {
         }
     }
 
-    if (loading) {
-        return (<main><h1>Loading.......</h1></main>)
-    }
+
 
 
     return (
-        <main>
+        <main className="auth-page">
+            <section className="auth-story"><p className="eyebrow">PREPARATION MEETS POSSIBILITY</p><h2>Your next chapter.<br /><span>Make it a good one.</span></h2><p>A focused space to understand the role, sharpen your answers, and show what you can do.</p><ul><li><span>✓</span>Questions built around your experience</li><li><span>✓</span>A roadmap you can put into practice</li><li><span>✓</span>A resume ready for your next opportunity</li></ul><div className="auth-decoration" aria-hidden="true">↗</div></section>
             <div className="form-container">
-                <h1>Login</h1>
-                {error && <p className="error-message" style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
+                <h1>Welcome back.</h1><p className="auth-subtitle">Sign in and pick up where you left off.</p>
+                {error && <p className="error-message" role="alert">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
                         <label htmlFor="email">Email</label>
                         <input
                             onChange={(e) => { setEmail(e.target.value) }}
-                            type="email" id="email" name='email' placeholder='Enter email address' />
+                            required autoComplete="email" type="email" id="email" name='email' placeholder='Enter email address' />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">Password</label><div className="password-field">
                         <input
                             onChange={(e) => { setPassword(e.target.value) }}
-                            type="password" id="password" name='password' placeholder='Enter password' />
+                            required autoComplete="current-password" type={showPassword ? 'text' : 'password'} id="password" name='password' placeholder='Enter password' /><button className="text-button" type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} onClick={() => setShowPassword(!showPassword)}>{showPassword ? 'Hide' : 'Show'}</button></div>
                     </div>
-                    <button className='button primary-button' >Login</button>
+                    <button disabled={loading} className='button primary-button'>{loading ? 'Please wait…' : 'Sign in →'}</button>
                 </form>
                 <p>Don't have an account? <Link to={"/register"} >Register</Link> </p>
             </div>

@@ -38,12 +38,20 @@ export const getAllInterviewReports = async () => {
     return result;
 }
 
-export const generateResumePdf = async (interviewReportId) => {
-    const response = await fetch(`/api/interview/resume/pdf/${interviewReportId}`, {
+export const generateResumePdf = async (interviewReportId, highlighted = false) => {
+    const response = await fetch(`/api/interview/resume/pdf/${interviewReportId}?highlighted=${highlighted}`, {
         method: 'POST'
     });
     if (!response.ok) {
-        throw new Error('Failed to generate resume pdf');
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to generate resume PDF');
     }
     return response.blob();
+}
+
+export const regenerateInterviewReport = async (interviewId) => {
+    const response = await fetch(`/api/interview/report/${interviewId}/regenerate`, { method: 'POST' });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || 'Could not reevaluate your report. Please retry.');
+    return result;
 }

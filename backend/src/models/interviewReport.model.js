@@ -79,7 +79,10 @@ const interviewReportSchema = new mongoose.Schema({
         type: Number,
         min: 0,
         max: 100,
+        required: true,
     },
+    matchReason: { type: String },
+    resumeDraft: { type: mongoose.Schema.Types.Mixed, select: false },
     technicalQuestions: [technicalQuestionSchema],
     behavioralQuestions: [behavioralQuestionSchema],
     skillGaps: [skillGapSchema],
@@ -99,4 +102,4 @@ const interviewReportSchema = new mongoose.Schema({
 
 const interviewReportModel = mongoose.model("InterviewReport", interviewReportSchema);
 
-module.exports = interviewReportModel;  
+module.exports = interviewReportModel;

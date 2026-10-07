@@ -99,3 +99,25 @@ genai project/
     ├── package.json        
     └── vite.config.js      # Vite configuration
 ```
+
+## PDF resumes generated with LaTeX
+
+The **Download Resume PDF** button generates candidate content, inserts it into the supplied LaTeX template, compiles it locally with Tectonic, and downloads a PDF. No Overleaf step is needed.
+
+The template lives in `backend/src/templates/resume.tex`. Unknown details are omitted, and candidate text is escaped before insertion. The authenticated endpoint is `POST /api/interview/resume/pdf/:interviewReportId`.
+
+### Compiler setup on another machine
+
+Install Tectonic from https://tectonic-typesetting.github.io/book/latest/installation/ and either put it on PATH or set `TECTONIC_PATH` in `backend/.env` to its executable's absolute path. On this Windows workspace it is already installed in `backend/tools/tectonic/tectonic.exe` (ignored by Git).
+
+Tectonic downloads required TeX packages on the first run and caches them locally. Compilation uses a private temporary directory, disables unsafe TeX features, and removes temporary files afterward. A sample compiled PDF is in `output/pdf/sample-resume.pdf`.
+
+Before starting the app on a fresh machine, warm the compiler cache from the project root with `tectonic -X compile --untrusted artifacts/sample-resume.tex`. This first run may take several minutes; subsequent downloads use the cache. Run `npm --prefix backend run test:resume` to verify real PDF compilation and download handling (AI and database are mocked in these tests).
+
+### Evaluation validation and review PDF
+
+Interview evaluation requires a score, a short title, a score explanation, complete technical and behavioral questions, and a preparation plan. Invalid AI responses are retried once and are never saved as successful reports. Existing incomplete reports can be repaired with **Retry evaluation** (`POST /api/interview/report/:interviewId/regenerate`). The score is an AI estimate based on the supplied profile, with its reasoning displayed in the report.
+
+**Download highlighted PDF** uses the same saved resume draft as the clean PDF and appends a clearly labeled suggestions section. Only new suggested skills receive yellow highlighting; existing skills and factual resume content stay unmarked. Known skills and common aliases are filtered against the original profile and the generated factual resume. Suggestions describe skills to develop, not qualifications already held. This download uses `POST /api/interview/resume/pdf/:interviewReportId?highlighted=true`. Reevaluating a report invalidates the cached resume draft so subsequent downloads reflect the new evaluation.
+
+Run `npm --prefix backend test` for report validation, suggestion filtering, real LaTeX compilation, and clean/highlighted PDF controller checks.
