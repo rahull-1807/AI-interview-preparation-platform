@@ -1,12 +1,21 @@
 # AI-Powered Interview Preparation Platform
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-onrender.com-brightgreen?style=for-the-badge&logo=render)](https://ai-interview-preparation-platform-g249.onrender.com/)
+
 An intelligent platform designed to help users prepare for interviews using Artificial Intelligence. This application leverages Google's Gemini AI to provide dynamic interview questions and feedback, complete with resume parsing and personalized insights.
+
+## 🌐 Live Demo
+
+**🔗 [https://ai-interview-preparation-platform-g249.onrender.com/](https://ai-interview-preparation-platform-g249.onrender.com/)**
+
+> **Note:** The app is hosted on Render's free tier. It may take ~60 seconds to wake up after a period of inactivity.
 
 ## 🚀 Features
 
 - **User Authentication**: Secure login and registration using JWT and bcrypt.
 - **AI-Driven Interviews**: Generates tailored interview questions based on user profiles or job descriptions using Google Gemini AI.
 - **Resume Parsing**: Upload your resume (PDF) and the system will extract key information to customize the interview experience.
+- **Resume PDF Generation**: Download a professionally formatted PDF resume compiled from your interview data using LaTeX.
 - **Modern UI**: Clean and responsive user interface built with React and Vite.
 
 ## 🛠️ Tech Stack
@@ -24,6 +33,10 @@ An intelligent platform designed to help users prepare for interviews using Arti
 - **JWT** for secure authentication
 - **Multer & PDF-Parse** for handling resume uploads and text extraction
 - **Tectonic** for compiling LaTeX resume PDFs
+
+### Deployment
+- **Render** (Free tier) — Docker-based deployment serving both frontend and backend from a single container
+- **MongoDB Atlas** (Free M0 tier) — Cloud database
 
 ## ⚙️ Prerequisites
 
@@ -125,6 +138,8 @@ Interview evaluation requires a score, a short title, a score explanation, compl
 Run `npm --prefix backend test` for report validation, suggestion filtering, real LaTeX compilation, and clean/highlighted PDF controller checks.
 
 ## Deploy on Render's Free plan
+
+The app is live at **[https://ai-interview-preparation-platform-g249.onrender.com/](https://ai-interview-preparation-platform-g249.onrender.com/)**.
 
 The root `Dockerfile` builds React and runs Express with Linux Tectonic. The frontend and API share one URL. The image precompiles a synthetic resume during its build to cache the template's TeX packages; no Gemini key or database connection is needed during the build. `.dockerignore` excludes credentials, local dependencies, generated documents, and the Windows compiler. Docker is not required on your computer to deploy through Render.
 
