@@ -218,3 +218,11 @@ Render's Free web service sleeps after 15 minutes without traffic and typically 
 Render's runtime filesystem is temporary. User accounts, reports, and cached resume drafts live in MongoDB; PDFs are compiled in temporary directories and returned as downloads. TeX packages warmed during the Docker build remain part of the image.
 
 References: [Render Docker deployment](https://render.com/docs/docker), [free-plan limits](https://render.com/docs/free), [outbound IP ranges](https://render.com/docs/outbound-ip-addresses), and [Atlas network access](https://www.mongodb.com/docs/atlas/security/add-ip-address-to-list/).
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request for bug fixes, new features, or improvements.
+
+## 📄 License
+
+This project is licensed under the ISC License.
