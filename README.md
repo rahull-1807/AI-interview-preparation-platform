@@ -1,6 +1,10 @@
 # AI-Powered Interview Preparation Platform
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-onrender.com-brightgreen?style=for-the-badge&logo=render)](https://ai-interview-preparation-platform-g249.onrender.com/)
+[![Node.js Version](https://img.shields.io/badge/Node.js-22.x-339933?style=for-the-badge&logo=nodedotjs)](https://nodejs.org/)
+[![React Version](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+[![Gemini AI](https://img.shields.io/badge/Google%20Gemini-AI-4285F4?style=for-the-badge&logo=google)](https://aistudio.google.com/)
+[![License](https://img.shields.io/badge/License-ISC-blue?style=for-the-badge)](LICENSE)
 
 An intelligent platform designed to help users prepare for interviews using Artificial Intelligence. This application leverages Google's Gemini AI to provide dynamic interview questions and feedback, complete with resume parsing and personalized insights.
 
@@ -17,6 +21,14 @@ An intelligent platform designed to help users prepare for interviews using Arti
 - **Resume Parsing**: Upload your resume (PDF) and the system will extract key information to customize the interview experience.
 - **Resume PDF Generation**: Download a professionally formatted PDF resume compiled from your interview data using LaTeX.
 - **Modern UI**: Clean and responsive user interface built with React and Vite.
+
+## 🔄 How It Works
+
+1. **Target Opportunity**: Paste the job description or role requirements.
+2. **Profile Ingestion**: Upload an existing resume (PDF) or write a summary of your experience.
+3. **AI Gap Analysis & Questions**: Google Gemini AI calculates a match score, highlights skill gaps, and generates targeted technical and behavioral interview questions.
+4. **Actionable Roadmap**: Follow a day-by-day preparation roadmap tailored to your specific timeline.
+5. **Tailored Resume PDF**: Download an ATS-friendly PDF resume compiled on-the-fly via Tectonic with LaTeX precision.
 
 ## 🛠️ Tech Stack
 
@@ -113,6 +125,18 @@ genai project/
     └── vite.config.js      # Vite configuration
 ```
 
+## 📡 API Overview
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/health` | Service health status and MongoDB connectivity check |
+| `POST` | `/api/auth/register` | Register a new user account |
+| `POST` | `/api/auth/login` | Authenticate user & issue secure JWT cookie |
+| `POST` | `/api/auth/logout` | Invalidate current user session |
+| `GET` | `/api/interview/reports` | Fetch authenticated user's saved interview plans |
+| `POST` | `/api/interview/generate` | Generate AI interview evaluation, questions & resume draft |
+| `POST` | `/api/interview/resume/pdf/:id` | Compile & download LaTeX-rendered PDF resume |
+
 ## PDF resumes generated with LaTeX
 
 The **Download Resume PDF** button generates candidate content, inserts it into the supplied LaTeX template, compiles it locally with Tectonic, and downloads a PDF. No Overleaf step is needed.
@@ -179,7 +203,7 @@ Choose a region near your MongoDB cluster. Keep automatic deployment enabled if 
 Add these under the service's **Environment** settings before deploying:
 
 | Variable | Value |
-| --- | --- |
+|---|---|
 | `MONGO_URI` | Your Atlas connection string, retaining your existing database selection |
 | `JWT_SECRET` | A long random secret |
 | `GOOGLE_GENAI_API_KEY` | Your Gemini API key |
