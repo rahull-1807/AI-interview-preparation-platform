@@ -1,10 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- Top Left Leaf (Lime) -->
-  <path d="M8 6C8 4.89543 8.89543 4 10 4H14V14H6C4.89543 14 4 13.1046 4 12V10C4 7.79086 5.79086 6 8 6Z" fill="#d4f938" />
-  <!-- Top Right Leaf (White) -->
-  <path d="M26 8C27.1046 8 28 8.89543 28 10V14H18V6C18 4.89543 18.8954 4 20 4H22C24.2091 4 26 5.79086 26 8Z" fill="#ffffff" />
-  <!-- Bottom Left Leaf (White) -->
-  <path d="M6 24C4.89543 24 4 23.1046 4 22V18H14V26C14 27.1046 13.1046 28 12 28H10C7.79086 28 6 26.2091 6 24Z" fill="#ffffff" />
-  <!-- Bottom Right Leaf (Lime) -->
-  <path d="M24 26C24 27.1046 23.1046 28 22 28H18V18H26C27.1046 18 28 18.8954 28 20V22C28 24.2091 26.2091 26 24 26Z" fill="#d4f938" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Dark Rounded Container with Soft Inner Contrast -->
+  <rect width="100" height="100" rx="22" fill="#0f1217"/>
+  
+  <g transform="translate(10, 8)">
+    <!-- 'i' Dot: Slanted Neon-Lime Petal/Leaf -->
+    <path d="M 23 12 C 23 4, 30 0, 39 0 L 46 0 L 38 22 L 24 22 C 23 18, 23 15, 23 12 Z" fill="#d4f938"/>
+    
+    <!-- 'i' Stem: Crisp Slanted White Bar -->
+    <polygon points="27,28 44,28 26,84 9,84" fill="#ffffff"/>
+    
+    <!-- 'L' Stem: Tall Slanted White Bar -->
+    <polygon points="56,0 73,0 48,84 31,84" fill="#ffffff"/>
+    
+    <!-- 'L' Foot: Slanted Neon-Lime Base -->
+    <polygon points="46,67 79,67 74,84 41,84" fill="#d4f938"/>
+  </g>
 </svg>

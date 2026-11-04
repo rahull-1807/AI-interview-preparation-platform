@@ -94,7 +94,7 @@ export default function TopBar({ onToggleSidebar, searchQuery = '', onSearchChan
           </div>
         ) : (
           <div className="guest-badge">
-            <span>InterviewLabs</span>
+            <img src="/interviewlabs-logo.png" alt="InterviewLabs" style={{ height: '26px', width: 'auto' }} />
           </div>
         )}
       </div>

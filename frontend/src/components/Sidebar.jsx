@@ -44,19 +44,12 @@ export default function Sidebar({ isOpen, onClose }) {
     <aside className={`app-sidebar ${isOpen ? 'app-sidebar--open' : ''}`}>
       {/* Top Logo: InterviewLabs */}
       <div className="sidebar-brand">
-        <Link to="/" className="brand-logo" onClick={onClose}>
-          <div className="brand-icon-box">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Modern geometric lab flask + pulse */}
-              <path d="M9 3H15M10 3V8.5L5 18C4.3 19.3 5.3 21 6.8 21H17.2C18.7 21 19.7 19.3 19 18L14 8.5V3" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M7.5 15H16.5" stroke="#d4f938" strokeWidth="2.2" strokeLinecap="round" />
-              <circle cx="12" cy="11" r="1.5" fill="#d4f938" />
-            </svg>
-          </div>
-          <div className="brand-title-wrap">
-            <span className="brand-name">Interview<span className="brand-accent">Labs</span></span>
-            <span className="brand-tag">AI Studio</span>
-          </div>
+        <Link to="/" className="brand-logo" onClick={onClose} title="InterviewLabs Home">
+          <img
+            src="/interviewlabs-logo.png"
+            alt="InterviewLabs AI Studio"
+            className="brand-logo-img"
+          />
         </Link>
         <button className="sidebar-close-btn" onClick={onClose} aria-label="Close sidebar">✕</button>
       </div>
