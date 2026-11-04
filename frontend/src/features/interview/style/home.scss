@@ -94,19 +94,19 @@
   font-size: 14px;
   border: 1px solid rgba(0, 0, 0, 0.08);
 
-  &--lightning {
+  &--target {
     background: #fdfdf5;
     color: #e59800;
     border-color: #faecc4;
   }
 
-  &--heart {
-    background: #fff5f5;
-    color: #ff4757;
-    border-color: #ffd2d6;
+  &--star {
+    background: #fffdf0;
+    color: #f59e0b;
+    border-color: #fde68a;
   }
 
-  &--runner {
+  &--chat {
     background: #f4f6fb;
     color: #2f3542;
     border-color: #e2e6f0;
@@ -118,11 +118,20 @@
     border-color: #e3dfff;
   }
 
-  &--moon {
+  &--brain {
     background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
     border-color: rgba(255, 255, 255, 0.15);
   }
+}
+
+.live-status-pill {
+  font-size: 11px;
+  font-weight: 750;
+  color: var(--accent-charcoal);
+  background: var(--accent-lime);
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
 }
 
 /* ── CARD 1: Energy Used ── */

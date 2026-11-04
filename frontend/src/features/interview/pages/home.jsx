@@ -62,12 +62,12 @@ export default function Home() {
     <div className="dashboard-content-wrapper">
       {/* ── Main Overview Title ── */}
       <section className="dashboard-hero-title">
-        <h1 className="hero-heading">Health Overview</h1>
-        <p className="hero-subtitle">Welcome back{user?.username ? `, ${user.username}` : ''}! Take control of your health today!</p>
+        <h1 className="hero-heading">Interview Overview</h1>
+        <p className="hero-subtitle">Welcome back{user?.username ? `, ${user.username}` : ''}! Take control of your interview preparation today.</p>
       </section>
 
-      {/* ── Exact Reference Bento Grid (Energy, Heart Rate, Activity, Wellness, Sleep Analysis) ── */}
-      <OverviewWidgets bestScore={bestScore} reportsCount={reports.length} />
+      {/* ── AI Interview Preparation Bento Grid ── */}
+      <OverviewWidgets bestScore={bestScore} reports={reports} />
 
       {/* ── Plan Builder & Preparation Studio ── */}
       <div className="builder-workspace-grid" id="plan-builder-section">

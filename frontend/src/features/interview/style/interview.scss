@@ -8,6 +8,30 @@
   gap: 20px;
 }
 
+.interview-top-actions {
+  margin-bottom: 4px;
+}
+
+.back-link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  color: var(--text-main);
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow-pill);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: var(--transition-smooth);
+
+  &:hover {
+    background: #f4f6fa;
+    transform: translateX(-2px);
+  }
+}
+
 .report-heading {
   margin-bottom: 8px;
 

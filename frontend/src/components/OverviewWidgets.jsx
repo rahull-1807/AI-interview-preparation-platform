@@ -1,62 +1,69 @@
 import { useState } from 'react'
 
-export default function OverviewWidgets({ bestScore }) {
+export default function OverviewWidgets({ bestScore, reports = [] }) {
   const [monthDropdown, setMonthDropdown] = useState(false)
   const [selectedRange, setSelectedRange] = useState('Monthly')
 
-  const displayScore = bestScore !== null && bestScore !== undefined ? bestScore : 78
-  const scoreKcal = bestScore ? `${(bestScore * 50).toLocaleString()}` : '4,3k'
+  // Calculate dynamic metrics from saved interview reports
+  const displayScore = Number.isFinite(bestScore) ? bestScore : 82
+  const totalQuestions = reports.reduce((acc, r) => {
+    const tech = r.technicalQuestions?.length || 0
+    const beh = r.behavioralQuestions?.length || 0
+    return acc + tech + beh
+  }, 0) || 24
+
+  const totalPlans = reports.length || 3
 
   return (
     <div className="overview-bento-grid">
-      {/* ── CARD 1: Energy Used / Preparation Score (Left White Card) ── */}
+      {/* ── CARD 1: Preparation Readiness (Left White Card) ── */}
       <div className="bento-card bento-card--energy">
         <div className="card-header">
           <div className="header-title">
-            <span className="icon-badge icon-badge--lightning">
+            <span className="icon-badge icon-badge--target">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="6" />
+                <circle cx="12" cy="12" r="2" />
               </svg>
             </span>
-            <span className="card-title-text">Energy Used</span>
+            <span className="card-title-text">Preparation Readiness</span>
           </div>
-          <button type="button" className="card-options-btn" aria-label="Card options">
-            •••
-          </button>
+          <span className="live-status-pill">Active</span>
         </div>
 
         <div className="metric-headline">
           <div className="metric-value-wrap">
-            <span className="metric-number">{scoreKcal}</span>
-            <span className="trend-badge trend-badge--lime">+5%</span>
+            <span className="metric-number">{displayScore}%</span>
+            <span className="trend-badge trend-badge--lime">+8%</span>
           </div>
-          <span className="metric-caption">kcal today</span>
+          <span className="metric-caption">Role Alignment Index</span>
         </div>
 
         {/* 3 Overlapping Graphic Circles */}
         <div className="overlapping-circles-container" aria-hidden="true">
-          <div className="circle circle--purple">
-            <span className="circle-val">2,6k</span>
-            <span className="circle-sub">kcal</span>
+          <div className="circle circle--purple" title="Technical Readiness">
+            <span className="circle-val">45%</span>
+            <span className="circle-sub">Technical</span>
           </div>
-          <div className="circle circle--dark">
-            <span className="circle-val">1,2k</span>
-            <span className="circle-sub">kcal</span>
+          <div className="circle circle--dark" title="Behavioral & STAR">
+            <span className="circle-val">30%</span>
+            <span className="circle-sub">Behavioral</span>
           </div>
-          <div className="circle circle--lime">
-            <span className="circle-val">500</span>
-            <span className="circle-sub">kcal</span>
+          <div className="circle circle--lime" title="ATS Resume Score">
+            <span className="circle-val">25%</span>
+            <span className="circle-sub">ATS Match</span>
           </div>
         </div>
 
         {/* Progress Breakdown */}
         <div className="progress-breakdown">
-          {/* Running */}
+          {/* Technical */}
           <div className="breakdown-row">
             <div className="row-meta">
               <span className="percent-val">45<span>%</span></span>
               <span className="label-text">
-                Running
+                Technical Mastery
                 <span className="indicator-dot indicator-dot--purple" />
               </span>
             </div>
@@ -65,12 +72,12 @@ export default function OverviewWidgets({ bestScore }) {
             </div>
           </div>
 
-          {/* Workouts */}
+          {/* Behavioral */}
           <div className="breakdown-row">
             <div className="row-meta">
               <span className="percent-val">30<span>%</span></span>
               <span className="label-text">
-                Workouts
+                Behavioral (STAR)
                 <span className="indicator-dot indicator-dot--dark" />
               </span>
             </div>
@@ -79,12 +86,12 @@ export default function OverviewWidgets({ bestScore }) {
             </div>
           </div>
 
-          {/* Walking */}
+          {/* ATS Resume Match */}
           <div className="breakdown-row">
             <div className="row-meta">
               <span className="percent-val">25<span>%</span></span>
               <span className="label-text">
-                Walking
+                ATS & Skill Match
                 <span className="indicator-dot indicator-dot--lime" />
               </span>
             </div>
@@ -95,74 +102,74 @@ export default function OverviewWidgets({ bestScore }) {
         </div>
       </div>
 
-      {/* ── MIDDLE COLUMN: Heart Rate & Activity ── */}
+      {/* ── MIDDLE COLUMN: Match Score & Question Bank ── */}
       <div className="bento-middle-col">
-        {/* CARD 2: Heart Rate / Confidence */}
+        {/* CARD 2: Role Match Rate */}
         <div className="bento-card bento-card--compact">
           <div className="card-header">
             <div className="header-title">
-              <span className="icon-badge icon-badge--heart">
+              <span className="icon-badge icon-badge--star">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
               </span>
-              <span className="card-title-text">Heart Rate</span>
+              <span className="card-title-text">Role Match Rate</span>
             </div>
-            <button type="button" className="card-options-btn" aria-label="Card options">•••</button>
           </div>
 
           <div className="compact-metric-row">
             <div className="compact-metric">
-              <span className="compact-value">62</span>
-              <span className="compact-unit">bpm</span>
+              <span className="compact-value">{displayScore}</span>
+              <span className="compact-unit">%</span>
             </div>
             <div className="compact-sub">
-              <span>Avg</span>
-              <strong>78 Bpm</strong>
+              <span>Average Match</span>
+              <strong>Across {totalPlans} Roles</strong>
             </div>
           </div>
         </div>
 
-        {/* CARD 3: Activity / Practice */}
+        {/* CARD 3: Question Bank Activity */}
         <div className="bento-card bento-card--compact">
           <div className="card-header">
             <div className="header-title">
-              <span className="icon-badge icon-badge--runner">
+              <span className="icon-badge icon-badge--chat">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 14v1a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-1" />
-                  <path d="M12 2v10" />
-                  <path d="m15 9-3 3-3-3" />
-                  <circle cx="12" cy="5" r="2" />
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </span>
-              <span className="card-title-text">Activity</span>
+              <span className="card-title-text">AI Questions</span>
             </div>
-            <button type="button" className="card-options-btn" aria-label="Card options">•••</button>
           </div>
 
           <div className="compact-metric-row">
             <div className="compact-metric">
-              <span className="compact-value">5,8</span>
-              <span className="compact-unit">km</span>
+              <span className="compact-value">{totalQuestions}</span>
+              <span className="compact-unit">Qs</span>
             </div>
             <div className="compact-sub">
-              <span>Active</span>
-              <strong>75 Min</strong>
+              <span>Curated Practice</span>
+              <strong>Model Answers Included</strong>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── RIGHT COLUMN: Wellness Index & Sleep Analysis ── */}
+      {/* ── RIGHT COLUMN: Readiness Index & AI Performance Analysis ── */}
       <div className="bento-right-col">
-        {/* CARD 4: % Wellness Index */}
+        {/* CARD 4: Preparedness Index */}
         <div className="bento-card bento-card--wellness">
           <div className="card-header">
             <div className="header-title">
-              <span className="icon-badge icon-badge--percent">%</span>
-              <span className="card-title-text">Wellness Index</span>
+              <span className="icon-badge icon-badge--percent">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="19" y1="5" x2="5" y2="19" />
+                  <circle cx="6.5" cy="6.5" r="2.5" />
+                  <circle cx="17.5" cy="17.5" r="2.5" />
+                </svg>
+              </span>
+              <span className="card-title-text">Preparedness Index</span>
             </div>
-            <button type="button" className="card-options-btn" aria-label="Card options">•••</button>
           </div>
 
           <div className="wellness-content">
@@ -171,11 +178,11 @@ export default function OverviewWidgets({ bestScore }) {
                 <span className="wellness-val">{displayScore}</span>
                 <span className="wellness-pct">%</span>
               </div>
-              <span className="trend-badge trend-badge--lime">+10%</span>
+              <span className="trend-badge trend-badge--lime">+10% ready</span>
             </div>
 
             {/* Dot Matrix Visual Chart */}
-            <div className="dot-matrix-chart" aria-hidden="true">
+            <div className="dot-matrix-chart" aria-hidden="true" title="Practice consistency tracker">
               {[
                 [1, 1, 1, 0, 0],
                 [1, 1, 1, 1, 0],
@@ -203,16 +210,16 @@ export default function OverviewWidgets({ bestScore }) {
           </div>
         </div>
 
-        {/* CARD 5: Sleep Analysis (Dark Contrast Card) */}
+        {/* CARD 5: Performance Analysis (Dark Contrast Card) */}
         <div className="bento-card bento-card--sleep">
           <div className="sleep-header">
             <div className="sleep-title-wrap">
-              <span className="icon-badge icon-badge--moon">
+              <span className="icon-badge icon-badge--brain">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                 </svg>
               </span>
-              <span className="sleep-title-text">Sleep Analysis</span>
+              <span className="sleep-title-text">Evaluation Trends</span>
             </div>
 
             <div className="sleep-dropdown-wrapper">
@@ -252,17 +259,17 @@ export default function OverviewWidgets({ bestScore }) {
             <div className="sleep-metric-col">
               <div className="metric-val-wrap">
                 <span className="bar-indicator bar-indicator--lime" />
-                <span className="sleep-big-val">85<span>%</span></span>
+                <span className="sleep-big-val">88<span>%</span></span>
               </div>
-              <span className="sleep-metric-label">Sleep Efficiency</span>
+              <span className="sleep-metric-label">Answer Quality</span>
             </div>
 
             <div className="sleep-metric-col">
               <div className="metric-val-wrap">
                 <span className="bar-indicator bar-indicator--purple" />
-                <span className="sleep-big-val">7h 15m</span>
+                <span className="sleep-big-val">4.5h</span>
               </div>
-              <span className="sleep-metric-label">Sleep Duration</span>
+              <span className="sleep-metric-label">Total Prep Time</span>
             </div>
           </div>
 
@@ -292,7 +299,7 @@ export default function OverviewWidgets({ bestScore }) {
                 <div className="bar-stick bar-stick--lime" style={{ height: '105px' }} />
                 <div className="bar-stick bar-stick--purple" style={{ height: '88px' }} />
               </div>
-              <span className="chart-month chart-month--active">Sept ↗</span>
+              <span className="chart-month chart-month--active">Active ↗</span>
             </div>
 
             {/* Oct */}

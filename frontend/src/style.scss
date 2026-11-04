@@ -12,6 +12,16 @@
   gap: 12px;
 }
 
+.auth-shell {
+  min-height: 100vh;
+  width: 100vw;
+  background-color: var(--bg-canvas);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
 /* ── LEFT TASKBAR / SIDEBAR ── */
 .app-sidebar {
   width: 250px;
@@ -39,13 +49,28 @@
       .brand-icon {
         width: 28px;
         height: 28px;
+        flex-shrink: 0;
       }
 
-      .brand-name {
-        font-size: 24px;
-        font-weight: 800;
-        color: #ffffff;
-        letter-spacing: -0.04em;
+      .brand-title-wrap {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+
+        .brand-name {
+          font-size: 24px;
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: -0.04em;
+        }
+
+        .brand-tag {
+          font-size: 11px;
+          font-weight: 800;
+          color: var(--accent-lime);
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+        }
       }
     }
 
@@ -77,6 +102,7 @@
       position: relative;
       width: 100%;
       text-align: left;
+      cursor: pointer;
 
       .nav-icon {
         display: flex;
@@ -124,60 +150,68 @@
     }
   }
 
-  /* Upgrade to Pro Card */
-  .pro-card {
-    background: var(--accent-lime);
-    border-radius: 20px;
-    padding: 18px 16px;
+  /* LaTeX Engine Status Card (Replaces Pro Subscription) */
+  .engine-card {
+    background: #1c2026;
+    border: 1px solid rgba(212, 249, 56, 0.22);
+    border-radius: 18px;
+    padding: 16px;
     margin-top: 24px;
     position: relative;
-    overflow: hidden;
 
-    .pro-card-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--accent-charcoal);
-      letter-spacing: -0.02em;
-    }
-
-    .pro-card-sub {
-      font-size: 11px;
-      color: rgba(33, 36, 41, 0.8);
-      margin-top: 4px;
-      line-height: 1.4;
-      font-weight: 550;
-    }
-
-    .pro-card-illustration {
-      height: 100px;
+    .engine-card-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin: 6px 0 10px;
-      position: relative;
+      gap: 8px;
+      margin-bottom: 8px;
 
-      .rocket-svg {
-        width: 90px;
-        height: 90px;
-        filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15));
+      .engine-pulse-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent-lime);
+        box-shadow: 0 0 8px var(--accent-lime);
+      }
+
+      .engine-status-text {
+        font-size: 10px;
+        font-weight: 750;
+        color: var(--accent-lime);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
       }
     }
 
-    .pro-upgrade-btn {
-      width: 100%;
-      background: var(--accent-charcoal);
-      color: #ffffff;
+    .engine-card-title {
+      font-size: 14px;
       font-weight: 750;
-      font-size: 12px;
-      padding: 11px;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .engine-card-sub {
+      font-size: 11px;
+      color: #929ba8;
+      margin: 4px 0 14px;
+      line-height: 1.45;
+    }
+
+    .engine-action-btn {
+      width: 100%;
+      background: var(--accent-lime);
+      color: var(--accent-charcoal);
+      font-weight: 750;
+      font-size: 11.5px;
+      padding: 10px 14px;
       border-radius: var(--radius-pill);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 2px 8px rgba(212, 249, 56, 0.2);
       transition: var(--transition-smooth);
+      text-align: center;
 
       &:hover {
-        background: #111315;
-        color: var(--accent-lime);
+        background: var(--accent-lime-hover);
         transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(212, 249, 56, 0.35);
       }
     }
   }
@@ -360,7 +394,7 @@
       border-radius: var(--radius-pill);
       padding: 9px 18px;
       box-shadow: var(--shadow-pill);
-      width: 240px;
+      width: 250px;
 
       .search-icon {
         color: var(--text-muted);
@@ -401,14 +435,72 @@
         right: -2px;
         background: var(--accent-lime);
         color: var(--accent-charcoal);
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 800;
-        width: 17px;
-        height: 17px;
-        border-radius: 50%;
+        padding: 1px 5px;
+        border-radius: 999px;
         display: grid;
         place-items: center;
         border: 2px solid var(--bg-canvas);
+      }
+    }
+
+    .notif-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 14px;
+      width: 290px;
+      z-index: 100;
+
+      .notif-header {
+        font-size: 13px;
+        font-weight: 750;
+        color: var(--text-main);
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .notif-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 10px;
+
+        li {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          font-size: 12px;
+          line-height: 1.4;
+
+          .notif-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #6366f1;
+            margin-top: 5px;
+            flex-shrink: 0;
+
+            &--lime {
+              background: #78b820;
+            }
+          }
+
+          p {
+            color: var(--text-main);
+          }
+
+          small {
+            font-size: 10px;
+            color: var(--text-muted);
+          }
+        }
       }
     }
 
@@ -466,78 +558,6 @@
           }
         }
       }
-    }
-  }
-}
-
-/* ── PRO MODAL ── */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  z-index: 999;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  animation: fadeIn 0.2s ease;
-
-  .pro-modal-box {
-    background: #ffffff;
-    border-radius: 24px;
-    max-width: 480px;
-    width: 100%;
-    padding: 32px;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-
-    .modal-close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 18px;
-      color: var(--text-muted);
-      padding: 6px;
-
-      &:hover {
-        color: var(--text-main);
-      }
-    }
-
-    .pro-badge {
-      display: inline-block;
-      background: var(--accent-lime);
-      color: var(--accent-charcoal);
-      font-size: 11px;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-      letter-spacing: 0.05em;
-      margin-bottom: 12px;
-    }
-
-    h2 {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-
-    p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    .pro-features-list {
-      list-style: none;
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-main);
     }
   }
 }

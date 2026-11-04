@@ -1,4 +1,4 @@
-import { Outlet } from "react-router"
+import { Outlet, useLocation } from "react-router"
 import { AuthProvider } from "./features/auth/auth.context.jsx"
 import { InterviewProvider } from "./features/interview/interview.context.jsx"
 import { useContext, useState } from "react"
@@ -8,8 +8,19 @@ import TopBar from "./components/TopBar.jsx"
 
 function WorkspaceSession() {
   const { user } = useContext(AuthContext)
+  const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register'
+
+  if (isAuthPage) {
+    return (
+      <div className="auth-shell">
+        <Outlet />
+      </div>
+    )
+  }
 
   return (
     <InterviewProvider key={user?._id || user?.id || 'guest'}>

@@ -7,16 +7,17 @@ export default function TopBar({ onToggleSidebar, searchQuery = '', onSearchChan
   const { user, setUser } = useContext(AuthContext)
   const navigate = useNavigate()
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [filterPeriod, setFilterPeriod] = useState('Today')
+  const [notifOpen, setNotifOpen] = useState(false)
+  const [filterPeriod, setFilterPeriod] = useState('All Roles')
   const [filterDropdown, setFilterDropdown] = useState(false)
 
-  const displayName = user?.username || 'Lucas Bennett'
-  const displayEmail = user?.email || 'bennet02@gmail.com'
+  const displayName = user?.username || 'Interview Candidate'
+  const displayEmail = user?.email || 'authenticated user'
 
-  // Format today's date like "12 July, 2024"
+  // Format today's date like "5 November, 2026"
   const formattedDate = new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
-    month: 'long',
+    month: 'short',
     year: 'numeric'
   }).format(new Date())
 
@@ -93,7 +94,7 @@ export default function TopBar({ onToggleSidebar, searchQuery = '', onSearchChan
           </div>
         ) : (
           <div className="guest-badge">
-            <span>Welcome Guest</span>
+            <span>Interview Lab</span>
           </div>
         )}
       </div>
@@ -108,7 +109,7 @@ export default function TopBar({ onToggleSidebar, searchQuery = '', onSearchChan
           </svg>
           <input
             type="search"
-            placeholder="Search..."
+            placeholder="Search interview plans…"
             value={searchQuery}
             onChange={e => onSearchChange?.(e.target.value)}
             aria-label="Search dashboard"
@@ -116,23 +117,49 @@ export default function TopBar({ onToggleSidebar, searchQuery = '', onSearchChan
         </div>
 
         {/* Notification Bell */}
-        <button
-          type="button"
-          className="notification-pill"
-          aria-label="Notifications"
-          onClick={() => alert('You have 2 new interview questions ready to review!')}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-          </svg>
-          <span className="notification-badge">2</span>
-        </button>
+        <div className="notif-wrapper" style={{ position: 'relative' }}>
+          <button
+            type="button"
+            className="notification-pill"
+            aria-label="Notifications"
+            onClick={() => setNotifOpen(o => !o)}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <span className="notification-badge">AI</span>
+          </button>
+
+          {notifOpen && (
+            <div className="notif-dropdown-menu">
+              <div className="notif-header">
+                <strong>AI Interview Updates</strong>
+              </div>
+              <ul className="notif-list">
+                <li>
+                  <span className="notif-dot" />
+                  <div>
+                    <p><strong>Gemini 2.0 Ready:</strong> Prompt models loaded for instant gap evaluations.</p>
+                    <small>Today</small>
+                  </div>
+                </li>
+                <li>
+                  <span className="notif-dot notif-dot--lime" />
+                  <div>
+                    <p><strong>LaTeX Compiler:</strong> Tectonic typesetting engine ready for resume exports.</p>
+                    <small>Active</small>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
 
         {/* Date Display */}
         <span className="date-display">{formattedDate}</span>
 
-        {/* Dropdown Pill ("Today ∨") */}
+        {/* Filter Period Pill */}
         <div className="period-pill-wrapper">
           <button
             type="button"
@@ -147,7 +174,7 @@ export default function TopBar({ onToggleSidebar, searchQuery = '', onSearchChan
 
           {filterDropdown && (
             <div className="period-dropdown-menu">
-              {['Today', 'This Week', 'This Month', 'All Time'].map(p => (
+              {['All Roles', 'Recent Month', 'Saved Plans'].map(p => (
                 <button
                   key={p}
                   type="button"
