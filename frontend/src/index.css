@@ -1,49 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* Color Palette - Flux Reference */
-  --bg-app: #15181b;
-  --bg-sidebar: #15181b;
-  --bg-canvas: #e9edf2;
+  /* High-Contrast Palette */
+  --bg-app: #111315;
+  --bg-sidebar: #15181c;
+  --bg-canvas: #e5e9f0; /* Soft cool slate gray for rich card contrast */
   --bg-card: #ffffff;
-  --bg-card-dark: #17191d;
+  --bg-card-dark: #15181c;
   
   --accent-lime: #d4f938;
   --accent-lime-hover: #c4ec26;
   --accent-lime-light: rgba(212, 249, 56, 0.22);
-  --accent-purple: #b2afff;
+  --accent-purple: #8c85ff;
   --accent-purple-light: #ecebff;
-  --accent-charcoal: #212429;
+  --accent-charcoal: #1c1f24;
   
-  --text-main: #16181c;
-  --text-secondary: #5e6573;
-  --text-muted: #8c96a4;
+  --text-main: #14161a;
+  --text-secondary: #4b5260;
+  --text-muted: #7e8896;
   --text-white: #ffffff;
-  --text-on-dark: #f2f4f8;
-  --text-on-dark-muted: #959ea9;
   
-  --border-subtle: rgba(0, 0, 0, 0.05);
-  --border-dark: rgba(255, 255, 255, 0.08);
+  --font-stack: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.02);
-  --shadow-hover: 0 12px 28px -4px rgba(0, 0, 0, 0.06), 0 4px 10px rgba(0, 0, 0, 0.03);
-  --shadow-pill: 0 2px 8px rgba(0, 0, 0, 0.04);
-  
-  --font-stack: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  
-  --radius-canvas: 32px;
-  --radius-card: 24px;
-  --radius-card-sm: 18px;
+  --radius-canvas: 34px;
+  --radius-card: 28px;
+  --radius-card-sm: 20px;
   --radius-pill: 999px;
   
+  /* 3D Bulged Card Shadows - Tactile Embossed Rim */
+  --shadow-3d-card: 
+    0 14px 30px -4px rgba(18, 24, 38, 0.08),
+    0 4px 10px -2px rgba(18, 24, 38, 0.04),
+    inset 0 2px 0 0 rgba(255, 255, 255, 1),
+    inset 0 -3px 0 0 rgba(195, 204, 217, 0.42),
+    inset 1.5px 0 0 0 rgba(255, 255, 255, 0.95),
+    inset -1.5px 0 0 0 rgba(195, 204, 217, 0.3);
+
+  --shadow-3d-hover: 
+    0 20px 38px -4px rgba(18, 24, 38, 0.13),
+    0 8px 16px -2px rgba(18, 24, 38, 0.06),
+    inset 0 2.5px 0 0 rgba(255, 255, 255, 1),
+    inset 0 -3.5px 0 0 rgba(195, 204, 217, 0.52);
+  
+  --shadow-pill-3d: 
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    inset 0 1.5px 0 rgba(255, 255, 255, 1),
+    inset 0 -2px 0 rgba(195, 204, 217, 0.35);
+
   --transition-smooth: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-fast: all 0.12s ease;
 }
 
-* {
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--font-stack) !important;
 }
 
 html, body {
@@ -57,7 +68,7 @@ html, body {
 }
 
 button, input, select, textarea {
-  font-family: inherit;
+  font-family: inherit !important;
   font-size: inherit;
   color: inherit;
 }
@@ -98,16 +109,9 @@ a {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.18);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.dark-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-}
-.dark-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.28);
 }

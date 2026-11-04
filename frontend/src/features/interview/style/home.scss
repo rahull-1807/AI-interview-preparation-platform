@@ -1,4 +1,4 @@
-// ── Dashboard & Bento Grid Styling (Flux Palette) ──
+// ── InterviewLab Dashboard & 3D Bento Grid Styling ──
 
 .dashboard-content-wrapper {
   max-width: 1300px;
@@ -11,8 +11,8 @@
   margin-bottom: 24px;
 
   .hero-heading {
-    font-size: clamp(28px, 3.2vw, 38px);
-    font-weight: 750;
+    font-size: clamp(28px, 3.2vw, 36px);
+    font-weight: 800;
     color: var(--text-main);
     letter-spacing: -0.03em;
     line-height: 1.15;
@@ -20,7 +20,7 @@
 
   .hero-subtitle {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 550;
     color: var(--text-secondary);
     margin-top: 6px;
   }
@@ -34,18 +34,22 @@
   margin-bottom: 32px;
 }
 
-/* Base Bento Card */
+/* 3D Bulged Bento Card */
 .bento-card {
   background: var(--bg-card);
   border-radius: var(--radius-card);
   padding: 22px 24px;
-  box-shadow: var(--shadow-card);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition: var(--transition-smooth);
   position: relative;
+  transition: var(--transition-smooth);
 
-  &:hover {
-    box-shadow: var(--shadow-hover);
+  &--3d {
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow-3d-card);
+
+    &:hover {
+      box-shadow: var(--shadow-3d-hover);
+      transform: translateY(-2px);
+    }
   }
 }
 
@@ -64,23 +68,19 @@
 
   .card-title-text {
     font-size: 14px;
-    font-weight: 650;
+    font-weight: 750;
     color: var(--text-main);
     letter-spacing: -0.01em;
   }
+}
 
-  .card-options-btn {
-    color: var(--text-muted);
-    font-size: 14px;
-    letter-spacing: 2px;
-    padding: 4px 6px;
-    border-radius: 6px;
-
-    &:hover {
-      color: var(--text-main);
-      background: rgba(0, 0, 0, 0.04);
-    }
-  }
+.live-status-pill {
+  font-size: 11px;
+  font-weight: 750;
+  color: var(--accent-charcoal);
+  background: var(--accent-lime);
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
 }
 
 /* Circular Icon Badges */
@@ -125,23 +125,14 @@
   }
 }
 
-.live-status-pill {
-  font-size: 11px;
-  font-weight: 750;
-  color: var(--accent-charcoal);
-  background: var(--accent-lime);
-  padding: 3px 9px;
-  border-radius: var(--radius-pill);
-}
-
-/* ── CARD 1: Energy Used ── */
+/* ── CARD 1: Preparation Readiness ── */
 .bento-card--energy {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   .metric-headline {
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 
     .metric-value-wrap {
       display: flex;
@@ -151,16 +142,18 @@
 
     .metric-number {
       font-size: 38px;
-      font-weight: 750;
+      font-weight: 800;
       color: var(--text-main);
       letter-spacing: -0.03em;
       line-height: 1;
     }
 
     .metric-caption {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 500;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-top: 4px;
+      display: block;
     }
   }
 }
@@ -168,7 +161,7 @@
 .trend-badge {
   font-size: 11px;
   font-weight: 750;
-  padding: 3px 8px;
+  padding: 3px 9px;
   border-radius: var(--radius-pill);
   display: inline-block;
 
@@ -178,11 +171,11 @@
   }
 }
 
-/* Overlapping Circles Diagram */
+/* 3D Overlapping Circles Diagram */
 .overlapping-circles-container {
   position: relative;
-  height: 175px;
-  margin: 12px 0 20px;
+  height: 165px;
+  margin: 10px 0 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,53 +187,55 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #ffffff;
     transition: var(--transition-smooth);
 
     .circle-val {
-      font-size: 22px;
-      font-weight: 750;
+      font-size: 20px;
+      font-weight: 800;
       line-height: 1.1;
       letter-spacing: -0.02em;
     }
 
     .circle-sub {
       font-size: 10px;
-      opacity: 0.85;
-      font-weight: 600;
+      font-weight: 650;
+      opacity: 0.9;
     }
 
     &--purple {
-      width: 122px;
-      height: 122px;
-      background: var(--accent-purple);
-      left: 10px;
-      top: 15px;
+      width: 115px;
+      height: 115px;
+      background: linear-gradient(135deg, #a39eff, #7a73ff);
+      color: #ffffff;
+      left: 12px;
+      top: 14px;
       z-index: 1;
-      color: #17191d;
+      box-shadow: 0 8px 22px rgba(122, 115, 255, 0.38), inset 0 2px 0 rgba(255, 255, 255, 0.4);
     }
 
     &--dark {
-      width: 106px;
-      height: 106px;
-      background: var(--accent-charcoal);
+      width: 102px;
+      height: 102px;
+      background: linear-gradient(135deg, #2b3038, #16181c);
+      color: #ffffff;
       right: 18px;
-      top: 24px;
+      top: 20px;
       z-index: 2;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.15);
     }
 
     &--lime {
-      width: 82px;
-      height: 82px;
-      background: var(--accent-lime);
-      color: var(--accent-charcoal);
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #e4ff57, #c7f240);
+      color: #14161a;
       bottom: 2px;
       left: 82px;
       z-index: 3;
-      box-shadow: 0 4px 12px rgba(212, 249, 56, 0.4);
+      box-shadow: 0 8px 20px rgba(199, 242, 64, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.6);
 
       .circle-val {
-        font-size: 18px;
+        font-size: 17px;
       }
     }
   }
@@ -250,12 +245,12 @@
 .progress-breakdown {
   display: flex;
   flex-direction: column;
-  gap: 13px;
+  gap: 12px;
 
   .breakdown-row {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
 
     .row-meta {
       display: flex;
@@ -263,13 +258,13 @@
       align-items: center;
 
       .percent-val {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 750;
         color: var(--text-main);
         letter-spacing: -0.02em;
 
         span {
-          font-size: 12px;
+          font-size: 11px;
           margin-left: 2px;
           font-weight: 600;
           color: var(--text-muted);
@@ -298,10 +293,10 @@
         transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 
         &--purple {
-          background: var(--accent-purple);
+          background: #7a73ff;
         }
         &--dark {
-          background: var(--accent-charcoal);
+          background: #1e2229;
         }
         &--lime {
           background: var(--accent-lime);
@@ -317,12 +312,12 @@
   border-radius: 50%;
   display: inline-block;
 
-  &--purple { background: var(--accent-purple); }
-  &--dark { background: var(--accent-charcoal); }
+  &--purple { background: #7a73ff; }
+  &--dark { background: #1e2229; }
   &--lime { background: var(--accent-lime); }
 }
 
-/* ── MIDDLE COLUMN: Heart Rate & Activity ── */
+/* ── MIDDLE COLUMN: Real Match Score & Questions ── */
 .bento-middle-col {
   display: flex;
   flex-direction: column;
@@ -345,19 +340,19 @@
     .compact-metric {
       display: flex;
       align-items: baseline;
-      gap: 4px;
+      gap: 3px;
 
       .compact-value {
-        font-size: 34px;
-        font-weight: 750;
+        font-size: 36px;
+        font-weight: 800;
         color: var(--text-main);
         letter-spacing: -0.03em;
         line-height: 1;
       }
 
       .compact-unit {
-        font-size: 13px;
-        font-weight: 600;
+        font-size: 14px;
+        font-weight: 700;
         color: var(--text-muted);
       }
     }
@@ -370,95 +365,98 @@
       color: var(--text-muted);
 
       strong {
-        font-size: 13px;
-        font-weight: 650;
+        font-size: 12.5px;
+        font-weight: 700;
         color: var(--text-main);
       }
     }
   }
 }
 
-/* ── RIGHT COLUMN: Wellness Index & Sleep Analysis ── */
+/* ── RIGHT COLUMN: Real Diagnosis & Real Plans Trend ── */
 .bento-right-col {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* CARD 4: Wellness Index */
 .bento-card--wellness {
   padding: 22px;
 
   .wellness-content {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    flex-direction: column;
+    gap: 12px;
 
     .wellness-headline {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      justify-content: space-between;
+      align-items: baseline;
 
       .wellness-val-row {
         display: flex;
         align-items: baseline;
+        gap: 4px;
 
         .wellness-val {
           font-size: 36px;
-          font-weight: 750;
+          font-weight: 800;
           color: var(--text-main);
           letter-spacing: -0.03em;
           line-height: 1;
         }
 
         .wellness-pct {
-          font-size: 14px;
+          font-size: 13px;
           color: var(--text-muted);
-          font-weight: 600;
-          margin-left: 2px;
+          font-weight: 700;
+        }
+      }
+
+      .metric-caption {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+      }
+    }
+
+    .real-gaps-badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+
+      .gap-stat-pill {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 5px 10px;
+        border-radius: var(--radius-pill);
+
+        &--high {
+          background: #ffe4e6;
+          color: #e11d48;
+        }
+        &--med {
+          background: #fef3c7;
+          color: #d97706;
+        }
+        &--low {
+          background: #f0fdf4;
+          color: #16a34a;
         }
       }
     }
   }
 }
 
-/* Dot Matrix Chart */
-.dot-matrix-chart {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  padding: 6px 0;
-
-  .matrix-col {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .matrix-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    display: block;
-
-    &--purple {
-      background: #7367f0;
-    }
-    &--lavender {
-      background: #c3beff;
-    }
-    &--empty {
-      background: #e7ecf2;
-    }
-  }
-}
-
-/* ── CARD 5: Sleep Analysis (Contrast Deep Dark Card) ── */
+/* ── CARD 5: 3D Contrast Dark Card ── */
 .bento-card--sleep {
-  background: var(--bg-card-dark);
-  color: var(--text-white);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #15181c;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 16px 36px -4px rgba(0, 0, 0, 0.42),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.5);
   padding: 24px;
   border-radius: var(--radius-card);
 
@@ -466,7 +464,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 
     .sleep-title-wrap {
       display: flex;
@@ -475,64 +473,25 @@
 
       .sleep-title-text {
         font-size: 14px;
-        font-weight: 650;
+        font-weight: 750;
         color: #ffffff;
       }
     }
-  }
 
-  .sleep-dropdown-wrapper {
-    position: relative;
-
-    .sleep-dropdown-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      padding: 6px 14px;
+    .saved-plans-badge {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--accent-lime);
+      font-size: 11px;
+      font-weight: 750;
+      padding: 3px 9px;
       border-radius: var(--radius-pill);
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.16);
-      }
-    }
-
-    .sleep-menu {
-      position: absolute;
-      top: calc(100% + 6px);
-      right: 0;
-      background: #23272d;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      padding: 6px;
-      display: flex;
-      flex-direction: column;
-      z-index: 10;
-      min-width: 100px;
-
-      .sleep-menu-item {
-        padding: 6px 10px;
-        font-size: 12px;
-        color: #cbd5e1;
-        text-align: left;
-        border-radius: 6px;
-
-        &:hover, &.active {
-          background: rgba(255, 255, 255, 0.1);
-          color: #ffffff;
-        }
-      }
     }
   }
 
   .sleep-metrics-row {
     display: flex;
     gap: 28px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 
     .sleep-metric-col {
       display: flex;
@@ -549,102 +508,97 @@
           height: 22px;
           border-radius: 3px;
 
-          &--lime {
-            background: var(--accent-lime);
-          }
-          &--purple {
-            background: var(--accent-purple);
-          }
+          &--lime { background: var(--accent-lime); }
+          &--purple { background: #8c85ff; }
         }
 
         .sleep-big-val {
           font-size: 26px;
-          font-weight: 750;
+          font-weight: 800;
           color: #ffffff;
           letter-spacing: -0.02em;
-
-          span {
-            font-size: 14px;
-            font-weight: 550;
-            color: #94a3b8;
-            margin-left: 1px;
-          }
         }
       }
 
       .sleep-metric-label {
         font-size: 11px;
-        color: #8fa0b5;
-        font-weight: 500;
+        color: #8c97a5;
+        font-weight: 550;
         margin-left: 13px;
       }
     }
   }
 
-  /* Bar Chart */
-  .sleep-bar-chart {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    height: 120px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  /* Real Plans Bar Track */
+  .real-plans-chart {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 14px;
 
-    .chart-bar-group {
+    .reports-bar-track {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
+      gap: 12px;
+      align-items: flex-end;
+      height: 115px;
 
-      .bar-stick {
-        width: 18px;
-        border-radius: 9px;
-        transition: height 0.3s ease;
+      .report-bar-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        height: 100%;
 
-        &--pattern {
-          background: repeating-linear-gradient(
-            45deg,
-            #22272e,
-            #22272e 2px,
-            #2d333b 2px,
-            #2d333b 6px
-          );
-        }
-
-        &--lime {
-          background: var(--accent-lime);
-          box-shadow: 0 0 16px rgba(212, 249, 56, 0.35);
-        }
-
-        &--purple {
-          background: var(--accent-purple);
-          box-shadow: 0 0 16px rgba(178, 175, 255, 0.35);
-        }
-      }
-
-      .chart-month {
-        font-size: 11px;
-        color: #64748b;
-        font-weight: 600;
-
-        &--active {
-          color: var(--accent-lime);
-          font-weight: 700;
-        }
-      }
-
-      &--active {
-        .dual-active-bars {
+        .bar-column-wrap {
+          flex: 1;
+          width: 100%;
           display: flex;
           align-items: flex-end;
-          gap: 4px;
+          justify-content: center;
+
+          .plan-bar {
+            width: 22px;
+            border-radius: 8px;
+            transition: height 0.4s ease;
+
+            &--active {
+              background: var(--accent-lime);
+              box-shadow: 0 0 16px rgba(212, 249, 56, 0.45);
+            }
+
+            &--subtle {
+              background: #2a2f38;
+              &:hover {
+                background: #39404c;
+              }
+            }
+          }
+        }
+
+        .plan-bar-label {
+          font-size: 10px;
+          color: #8c97a5;
+          font-weight: 600;
+          white-space: nowrap;
+        }
+
+        .plan-bar-score {
+          font-size: 10px;
+          font-weight: 800;
+          color: #ffffff;
         }
       }
+    }
+
+    .empty-chart-state {
+      padding: 24px 10px;
+      text-align: center;
+      font-size: 12px;
+      color: #8c97a5;
     }
   }
 }
 
-/* ── PLAN BUILDER & ASIDE GRID ── */
+/* ── PLAN BUILDER & ASIDE GRID (3D Bulged Cards) ── */
 .builder-workspace-grid {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -656,8 +610,13 @@
   background: var(--bg-card);
   border-radius: var(--radius-card);
   padding: 28px;
-  box-shadow: var(--shadow-card);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-3d-card);
+  transition: var(--transition-smooth);
+
+  &:hover {
+    box-shadow: var(--shadow-3d-hover);
+  }
 }
 
 .plan-builder-card {
@@ -671,7 +630,7 @@
 
     h2 {
       font-size: 22px;
-      font-weight: 750;
+      font-weight: 800;
       color: var(--text-main);
       letter-spacing: -0.02em;
       margin-top: 2px;
@@ -693,7 +652,7 @@
 
     label {
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 750;
       color: var(--text-main);
       display: flex;
       align-items: center;
@@ -704,20 +663,20 @@
       background: var(--bg-app);
       color: var(--accent-lime);
       font-size: 10px;
-      font-weight: 750;
+      font-weight: 800;
       padding: 3px 7px;
       border-radius: 6px;
     }
 
     .field-required-tag {
       font-size: 11px;
-      font-weight: 600;
-      color: #e056fd;
+      font-weight: 700;
+      color: #7a73ff;
     }
 
     .field-optional-tag {
       font-size: 11px;
-      font-weight: 500;
+      font-weight: 550;
       color: var(--text-muted);
     }
 
@@ -729,21 +688,22 @@
   .clean-textarea {
     width: 100%;
     min-height: 130px;
-    border: 1px solid #d9e0e8;
-    background: #f7f9fb;
+    border: 1px solid #d5dce5;
+    background: #f7f9fc;
     border-radius: 14px;
     padding: 14px 16px;
-    font-size: 13px;
+    font-size: 13.5px;
     line-height: 1.6;
     color: var(--text-main);
     transition: var(--transition-smooth);
     resize: vertical;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
 
     &:focus {
       outline: none;
-      border-color: #8b85ff;
+      border-color: #7a73ff;
       background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(139, 133, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(122, 115, 255, 0.18);
     }
 
     &::placeholder {
@@ -761,12 +721,13 @@
     font-size: 11px;
     color: var(--text-muted);
     margin-top: 6px;
+    font-weight: 550;
   }
 }
 
 .mini-eyebrow {
   font-size: 10px;
-  font-weight: 750;
+  font-weight: 800;
   letter-spacing: 0.08em;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -774,9 +735,9 @@
 
 .ai-tag {
   background: #f0f7e6;
-  color: #557d18;
+  color: #496d13;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 750;
   padding: 5px 12px;
   border-radius: var(--radius-pill);
   display: flex;
@@ -795,7 +756,7 @@
 .resume-upload-zone {
   border: 2px dashed #cbd5e1;
   background: #f8fafc;
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 16px 20px;
   display: flex;
   align-items: center;
@@ -815,13 +776,13 @@
   }
 
   .upload-icon-circle {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 12px;
     background: #edf1f7;
     color: var(--text-main);
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 800;
     display: grid;
     place-items: center;
     flex-shrink: 0;
@@ -834,18 +795,19 @@
 
     strong {
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 700;
       color: var(--text-main);
     }
 
     small {
       font-size: 11px;
       color: var(--text-muted);
+      font-weight: 550;
     }
   }
 
   &:hover, &.is-dragging {
-    border-color: #8b85ff;
+    border-color: #7a73ff;
     background: #f4f3ff;
   }
 
@@ -878,7 +840,7 @@
   gap: 12px;
   margin: 16px 0 8px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 650;
   color: var(--text-muted);
 
   span {
@@ -899,7 +861,7 @@
 
   .status-helper-text {
     font-size: 12px;
-    font-weight: 550;
+    font-weight: 600;
     color: var(--text-secondary);
   }
 
@@ -920,7 +882,7 @@
   .pulsing-line {
     height: 4px;
     border-radius: 2px;
-    background: linear-gradient(90deg, var(--accent-lime), var(--accent-purple));
+    background: linear-gradient(90deg, var(--accent-lime), #7a73ff);
     margin-bottom: 8px;
     animation: pulseWidth 2s infinite ease-in-out;
   }
@@ -942,7 +904,7 @@
 .readiness-checklist-card {
   h3 {
     font-size: 18px;
-    font-weight: 750;
+    font-weight: 800;
     margin-top: 4px;
     letter-spacing: -0.02em;
   }
@@ -982,13 +944,13 @@
         display: grid;
         place-items: center;
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 800;
         color: var(--text-muted);
       }
 
       &.is-complete {
         color: var(--text-main);
-        font-weight: 600;
+        font-weight: 650;
 
         .check-dot {
           background: var(--accent-lime);
@@ -1007,14 +969,14 @@
 }
 
 .benefits-summary-card {
-  background: #f7f9fc;
+  background: #ffffff;
 
   .benefits-badge {
     display: inline-block;
     font-size: 10px;
-    font-weight: 750;
+    font-weight: 800;
     letter-spacing: 0.08em;
-    color: #6366f1;
+    color: #4f46e5;
     background: #eef2ff;
     padding: 3px 8px;
     border-radius: 6px;
@@ -1023,7 +985,7 @@
 
   h3 {
     font-size: 18px;
-    font-weight: 750;
+    font-weight: 800;
     letter-spacing: -0.02em;
     margin-bottom: 14px;
     line-height: 1.25;
@@ -1044,7 +1006,7 @@
 
       .benefit-num {
         font-size: 10px;
-        font-weight: 750;
+        font-weight: 800;
         color: var(--text-muted);
       }
     }
@@ -1063,7 +1025,7 @@
 
     h2 {
       font-size: 22px;
-      font-weight: 750;
+      font-weight: 800;
       color: var(--text-main);
       display: flex;
       align-items: center;
@@ -1072,9 +1034,10 @@
 
     .count-pill {
       background: var(--bg-card);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      box-shadow: var(--shadow-pill-3d);
+      border: 1px solid rgba(255, 255, 255, 0.95);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       padding: 3px 9px;
       border-radius: 999px;
     }
@@ -1086,16 +1049,17 @@
 
     .controls-search-input, .controls-sort-select {
       background: var(--bg-card);
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-pill-3d);
       padding: 8px 14px;
       border-radius: var(--radius-pill);
       font-size: 12px;
       color: var(--text-main);
+      font-weight: 600;
 
       &:focus {
         outline: none;
-        border-color: #8b85ff;
+        border-color: #7a73ff;
       }
     }
 
@@ -1115,8 +1079,8 @@
   background: var(--bg-card);
   border-radius: var(--radius-card-sm);
   padding: 18px 20px;
-  box-shadow: var(--shadow-card);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-3d-card);
+  border: 1px solid rgba(255, 255, 255, 0.95);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1124,8 +1088,7 @@
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
-    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-3d-hover);
 
     .arrow-arrow {
       transform: translateX(3px);
@@ -1140,16 +1103,17 @@
     min-width: 0;
 
     .plan-icon-bubble {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
       background: #f4f6fa;
       color: var(--text-main);
       display: grid;
       place-items: center;
       font-size: 16px;
-      font-weight: 750;
+      font-weight: 800;
       flex-shrink: 0;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
     .plan-info {
@@ -1157,7 +1121,7 @@
 
       h3 {
         font-size: 14px;
-        font-weight: 700;
+        font-weight: 750;
         color: var(--text-main);
         white-space: nowrap;
         overflow: hidden;
@@ -1168,6 +1132,7 @@
         font-size: 11px;
         color: var(--text-muted);
         margin-top: 2px;
+        font-weight: 550;
       }
     }
   }
@@ -1183,7 +1148,7 @@
 
       strong {
         font-size: 18px;
-        font-weight: 750;
+        font-weight: 800;
         color: var(--text-main);
         display: block;
         line-height: 1;
@@ -1191,7 +1156,7 @@
 
       small {
         font-size: 9px;
-        font-weight: 600;
+        font-weight: 700;
         color: var(--text-muted);
         text-transform: uppercase;
       }
@@ -1211,6 +1176,7 @@
   border-radius: var(--radius-card);
   padding: 40px;
   text-align: center;
+  box-shadow: var(--shadow-3d-card);
 
   .empty-icon {
     font-size: 32px;
@@ -1221,7 +1187,7 @@
 
   h3 {
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 750;
     color: var(--text-main);
   }
 
@@ -1236,11 +1202,12 @@
 .dashboard-footer {
   margin-top: 50px;
   padding: 24px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: space-between;
   font-size: 12px;
   color: var(--text-muted);
+  font-weight: 550;
 }
 
 /* ── RESPONSIVE ── */

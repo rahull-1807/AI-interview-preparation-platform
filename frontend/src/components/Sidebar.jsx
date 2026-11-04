@@ -41,18 +41,20 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <aside className={`app-sidebar ${isOpen ? 'app-sidebar--open' : ''}`}>
-      {/* Top Logo */}
+      {/* Top Logo: InterviewLabs */}
       <div className="sidebar-brand">
         <Link to="/" className="brand-logo" onClick={onClose}>
-          <svg className="brand-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 6C8 4.89543 8.89543 4 10 4H14V14H6C4.89543 14 4 13.1046 4 12V10C4 7.79086 5.79086 6 8 6Z" fill="#d4f938" />
-            <path d="M26 8C27.1046 8 28 8.89543 28 10V14H18V6C18 4.89543 18.8954 4 20 4H22C24.2091 4 26 5.79086 26 8Z" fill="#ffffff" />
-            <path d="M6 24C4.89543 24 4 23.1046 4 22V18H14V26C14 27.1046 13.1046 28 12 28H10C7.79086 28 6 26.2091 6 24Z" fill="#ffffff" />
-            <path d="M24 26C24 27.1046 23.1046 28 22 28H18V18H26C27.1046 18 28 18.8954 28 20V22C28 24.2091 26.2091 26 24 26Z" fill="#d4f938" />
-          </svg>
+          <div className="brand-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Modern geometric lab flask + pulse */}
+              <path d="M9 3H15M10 3V8.5L5 18C4.3 19.3 5.3 21 6.8 21H17.2C18.7 21 19.7 19.3 19 18L14 8.5V3" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7.5 15H16.5" stroke="#d4f938" strokeWidth="2.2" strokeLinecap="round" />
+              <circle cx="12" cy="11" r="1.5" fill="#d4f938" />
+            </svg>
+          </div>
           <div className="brand-title-wrap">
-            <span className="brand-name">flux</span>
-            <span className="brand-tag">prep</span>
+            <span className="brand-name">Interview<span className="brand-accent">Labs</span></span>
+            <span className="brand-tag">AI Studio</span>
           </div>
         </Link>
         <button className="sidebar-close-btn" onClick={onClose} aria-label="Close sidebar">✕</button>
@@ -121,7 +123,7 @@ export default function Sidebar({ isOpen, onClose }) {
         )}
       </nav>
 
-      {/* Quick Status Info Card (Replaces the Pro subscription card) */}
+      {/* Quick Action Engine Card */}
       <div className="engine-card">
         <div className="engine-card-header">
           <span className="engine-pulse-dot" />
