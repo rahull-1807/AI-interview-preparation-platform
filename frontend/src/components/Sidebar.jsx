@@ -45,11 +45,22 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Top Logo: InterviewLabs */}
       <div className="sidebar-brand">
         <Link to="/" className="brand-logo" onClick={onClose} title="InterviewLabs Home">
-          <img
-            src="/interviewlabs-logo.png"
-            alt="InterviewLabs AI Studio"
-            className="brand-logo-img"
-          />
+          <div className="brand-icon-box">
+            <svg width="22" height="22" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* 'i' Dot: Neon Lime Slanted Leaf */}
+              <path d="M 28 14 C 28 8, 33 6, 40 6 L 47 6 L 41 26 L 24 26 C 24 21, 26 17, 28 14 Z" fill="#d4f938" />
+              {/* 'i' Stem: Slanted White Bar */}
+              <polygon points="27,33 41,33 26,88 12,88" fill="#ffffff" />
+              {/* 'L' Stem: Tall Slanted White Bar */}
+              <polygon points="53,6 67,6 45,88 31,88" fill="#ffffff" />
+              {/* 'L' Foot: Neon Lime Base */}
+              <polygon points="46,68 81,68 76,88 41,88" fill="#d4f938" />
+            </svg>
+          </div>
+          <div className="brand-title-wrap">
+            <span className="brand-name">Interview<span className="brand-accent">Labs</span></span>
+            <span className="brand-tag">AI Studio</span>
+          </div>
         </Link>
         <button className="sidebar-close-btn" onClick={onClose} aria-label="Close sidebar">✕</button>
       </div>

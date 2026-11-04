@@ -44,21 +44,19 @@
     .brand-logo {
       display: flex;
       align-items: center;
+      gap: 12px;
       text-decoration: none;
-      padding: 4px 0;
 
-      .brand-logo-img {
+      .brand-icon-box {
+        width: 38px;
         height: 38px;
-        width: auto;
-        max-width: 190px;
-        object-fit: contain;
-        display: block;
-        transition: var(--transition-smooth);
-
-        &:hover {
-          filter: brightness(1.08);
-          transform: scale(1.02);
-        }
+        background: #1e2229;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        flex-shrink: 0;
       }
 
       .brand-title-wrap {
