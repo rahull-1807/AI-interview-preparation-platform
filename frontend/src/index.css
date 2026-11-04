@@ -1,41 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* Colors */
-  --bg-page: #0b0f19;
-  --bg-card: #151b2b;
-  --bg-panel: #1e2638;
-  --bg-input: #0b0f19;
+  /* Color Palette - Flux Reference */
+  --bg-app: #15181b;
+  --bg-sidebar: #15181b;
+  --bg-canvas: #e9edf2;
+  --bg-card: #ffffff;
+  --bg-card-dark: #17191d;
   
-  --border-color: #2a344a;
-  --border-glow: rgba(167, 139, 250, 0.3);
+  --accent-lime: #d4f938;
+  --accent-lime-hover: #c4ec26;
+  --accent-lime-light: rgba(212, 249, 56, 0.22);
+  --accent-purple: #b2afff;
+  --accent-purple-light: #ecebff;
+  --accent-charcoal: #212429;
   
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #8492a6;
+  --text-main: #16181c;
+  --text-secondary: #5e6573;
+  --text-muted: #8c96a4;
+  --text-white: #ffffff;
+  --text-on-dark: #f2f4f8;
+  --text-on-dark-muted: #959ea9;
   
-  --accent-color: #a78bfa; /* Vibrant purple */
-  --accent-hover: #c4b5fd;
-  --accent-glow: rgba(167, 139, 250, 0.5);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-dark: rgba(255, 255, 255, 0.08);
   
-  --severity-high: #f43f5e;
-  --severity-medium: #f59e0b;
-  --severity-low: #10b981;
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 12px 28px -4px rgba(0, 0, 0, 0.06), 0 4px 10px rgba(0, 0, 0, 0.03);
+  --shadow-pill: 0 2px 8px rgba(0, 0, 0, 0.04);
   
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #a78bfa 0%, #3b82f6 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(30, 38, 56, 0.6) 0%, rgba(21, 27, 43, 0.4) 100%);
+  --font-stack: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   
-  /* Layout */
-  --font-stack: 'Outfit', system-ui, -apple-system, sans-serif;
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  --radius-canvas: 32px;
+  --radius-card: 24px;
+  --radius-card-sm: 18px;
+  --radius-pill: 999px;
   
-  /* Transitions */
-  --transition-fast: 0.15s ease-in-out;
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.12s ease;
 }
 
 * {
@@ -44,40 +46,68 @@
   box-sizing: border-box;
 }
 
-body {
-  min-height: 100vh;
-  background-color: var(--bg-page);
-  color: var(--text-primary);
+html, body {
+  background-color: var(--bg-app);
+  color: var(--text-main);
   font-family: var(--font-stack);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
+  line-height: 1.5;
+  min-height: 100vh;
 }
 
-/* Base Headings */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-primary);
-  font-weight: 700;
-  line-height: 1.2;
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
 }
 
-h1 {
-  font-size: 2.5rem;
-  letter-spacing: -0.02em;
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: var(--transition-smooth);
 }
 
-h2 {
-  font-size: 1.8rem;
+button:active, .clickable:active {
+  transform: scale(0.97);
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none !important;
 }
 
-@keyframes glow {
-  0% { box-shadow: 0 0 5px var(--accent-glow); }
-  50% { box-shadow: 0 0 20px var(--accent-glow); }
-  100% { box-shadow: 0 0 5px var(--accent-glow); }
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background-color: var(--accent-lime);
+  color: var(--bg-app);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.dark-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+.dark-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
