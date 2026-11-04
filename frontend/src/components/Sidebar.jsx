@@ -24,6 +24,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
   const isHome = location.pathname === '/'
   const isInterview = location.pathname.startsWith('/interview')
+  const isTracker = location.pathname === '/applications'
 
   const scrollToSection = (id) => {
     onClose?.()
@@ -77,6 +78,20 @@ export default function Sidebar({ isOpen, onClose }) {
           </span>
           <span className="nav-label">Dashboard</span>
           <span className="nav-badge">AI</span>
+        </Link>
+
+        <Link
+          to="/applications"
+          className={`nav-item ${isTracker ? 'nav-item--active' : ''}`}
+          onClick={onClose}
+        >
+          <span className="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
+          </span>
+          <span className="nav-label">Application Tracker</span>
         </Link>
 
         <button

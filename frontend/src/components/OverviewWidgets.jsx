@@ -1,273 +1,240 @@
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { getAllApplications } from '../features/applications/services/application.api.js';
+
 export default function OverviewWidgets({ reports = [] }) {
-  const hasReports = reports && reports.length > 0
-  const latestReport = hasReports ? reports[0] : null
+  const navigate = useNavigate();
+  const [applications, setApplications] = useState([]);
+  const [appsLoading, setAppsLoading] = useState(true);
 
-  // 100% REAL DATA EXTRACTION - NO RANDOM VALUES
-  const matchScore = latestReport && Number.isFinite(latestReport.matchScore) ? latestReport.matchScore : null
-  const roleTitle = latestReport?.title || 'No active plan'
+  useEffect(() => {
+    let isMounted = true;
+    getAllApplications()
+      .then(data => {
+        if (isMounted) setApplications(data || []);
+      })
+      .catch(() => {
+        if (isMounted) setApplications([]);
+      })
+      .finally(() => {
+        if (isMounted) setAppsLoading(false);
+      });
+    return () => { isMounted = false; };
+  }, []);
 
-  const techCount = latestReport?.technicalQuestions?.length || 0
-  const behCount = latestReport?.behavioralQuestions?.length || 0
-  const totalQuestions = techCount + behCount
+  const recentPlans = (reports || []).slice(0, 5);
+  const recentApps = (applications || []).slice(0, 5);
+  const totalAppsCount = applications.length;
 
-  const techPct = totalQuestions > 0 ? Math.round((techCount / totalQuestions) * 100) : 0
-  const behPct = totalQuestions > 0 ? 100 - techPct : 0
-
-  const skillGaps = latestReport?.skillGaps || []
-  const highGaps = skillGaps.filter(g => g.severity === 'high').length
-  const medGaps = skillGaps.filter(g => g.severity === 'medium').length
-  const lowGaps = skillGaps.filter(g => g.severity === 'low').length
-
-  const roadmapDays = latestReport?.preparationPlan?.length || 0
-  const totalTasks = latestReport?.preparationPlan?.reduce((acc, d) => acc + (d.tasks?.length || 0), 0) || 0
-
-  const allScores = reports.map(r => r.matchScore).filter(Number.isFinite)
-  const avgScore = allScores.length ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length) : null
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'Accepted':
+      case 'Offer':
+        return 'app-status--green';
+      case 'Interviewing':
+        return 'app-status--yellow';
+      case 'Rejected':
+      case 'Declined':
+        return 'app-status--red';
+      case 'No Response':
+        return 'app-status--slate';
+      default:
+        return 'app-status--blue';
+    }
+  };
 
   return (
-    <div className="overview-bento-grid">
-      {/* ── CARD 1: Preparation Readiness (Left 3D White Card) ── */}
-      <div className="bento-card bento-card--3d bento-card--energy">
-        <div className="card-header">
-          <div className="header-title">
-            <span className="icon-badge icon-badge--target">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <circle cx="12" cy="12" r="6" />
-                <circle cx="12" cy="12" r="2" />
+    <div className="dashboard-two-cards-grid">
+      {/* ── LEFT CARD: Recent Preparation Plan ── */}
+      <div className="bento-card bento-card--3d dashboard-card-half">
+        <div className="dash-card-header">
+          <div className="dash-title-group">
+            <span className="dash-icon-badge dash-icon-badge--prep">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
               </svg>
             </span>
-            <span className="card-title-text">Preparation Readiness</span>
+            <div>
+              <h2 className="dash-card-title">Recent Preparation Plans</h2>
+              <span className="dash-card-sub">Saved AI interview preparation plans</span>
+            </div>
           </div>
-          <span className="live-status-pill">{hasReports ? 'Report Loaded' : 'Awaiting Plan'}</span>
-        </div>
 
-        <div className="metric-headline">
-          <div className="metric-value-wrap">
-            <span className="metric-number">{matchScore !== null ? `${matchScore}%` : '—'}</span>
-            {matchScore !== null && (
-              <span className="trend-badge trend-badge--lime">
-                {matchScore >= 75 ? 'Strong Match' : matchScore >= 50 ? 'Moderate Fit' : 'Growth Role'}
-              </span>
-            )}
-          </div>
-          <span className="metric-caption">
-            {hasReports ? roleTitle : 'Create an interview plan below'}
+          <span className="count-pill-tag">
+            {reports.length} {reports.length === 1 ? 'Plan' : 'Plans'}
           </span>
         </div>
 
-        {/* 3 Visual Circles Representing Actual Breakdown */}
-        <div className="overlapping-circles-container" aria-hidden="true">
-          <div className="circle circle--purple" title="Technical Questions Proportion">
-            <span className="circle-val">{hasReports ? `${techPct}%` : '0%'}</span>
-            <span className="circle-sub">Technical</span>
-          </div>
-          <div className="circle circle--dark" title="Behavioral Questions Proportion">
-            <span className="circle-val">{hasReports ? `${behPct}%` : '0%'}</span>
-            <span className="circle-sub">Behavioral</span>
-          </div>
-          <div className="circle circle--lime" title="Calculated Role Match">
-            <span className="circle-val">{matchScore !== null ? `${matchScore}%` : '0%'}</span>
-            <span className="circle-sub">Role Fit</span>
-          </div>
-        </div>
-
-        {/* Real Progress Breakdown */}
-        <div className="progress-breakdown">
-          {/* Technical Questions */}
-          <div className="breakdown-row">
-            <div className="row-meta">
-              <span className="percent-val">{techCount} <span>questions</span></span>
-              <span className="label-text">
-                Technical Mastery
-                <span className="indicator-dot indicator-dot--purple" />
-              </span>
+        <div className="dash-card-body">
+          {recentPlans.length === 0 ? (
+            <div className="dash-empty-content">
+              <div className="dash-empty-icon">📝</div>
+              <h4>No preparation plans yet</h4>
+              <p>Create your first tailored interview plan below to prepare with AI.</p>
+              <button
+                type="button"
+                className="dash-action-btn"
+                onClick={() => {
+                  const el = document.getElementById('plan-builder-section');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                + Create Plan Below
+              </button>
             </div>
-            <div className="progress-track">
-              <div className="progress-fill progress-fill--purple" style={{ width: `${hasReports ? techPct : 0}%` }} />
-            </div>
-          </div>
-
-          {/* Behavioral Questions */}
-          <div className="breakdown-row">
-            <div className="row-meta">
-              <span className="percent-val">{behCount} <span>questions</span></span>
-              <span className="label-text">
-                Behavioral (STAR)
-                <span className="indicator-dot indicator-dot--dark" />
-              </span>
-            </div>
-            <div className="progress-track">
-              <div className="progress-fill progress-fill--dark" style={{ width: `${hasReports ? behPct : 0}%` }} />
-            </div>
-          </div>
-
-          {/* Skill Gaps Addressed */}
-          <div className="breakdown-row">
-            <div className="row-meta">
-              <span className="percent-val">{skillGaps.length} <span>identified</span></span>
-              <span className="label-text">
-                Skill Gaps Diagnosed
-                <span className="indicator-dot indicator-dot--lime" />
-              </span>
-            </div>
-            <div className="progress-track">
-              <div className="progress-fill progress-fill--lime" style={{ width: `${skillGaps.length ? Math.min(skillGaps.length * 20, 100) : 0}%` }} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── MIDDLE COLUMN: Real Match Score & Questions ── */}
-      <div className="bento-middle-col">
-        {/* CARD 2: Role Match Rate */}
-        <div className="bento-card bento-card--3d bento-card--compact">
-          <div className="card-header">
-            <div className="header-title">
-              <span className="icon-badge icon-badge--star">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                </svg>
-              </span>
-              <span className="card-title-text">Role Match Rate</span>
-            </div>
-          </div>
-
-          <div className="compact-metric-row">
-            <div className="compact-metric">
-              <span className="compact-value">{matchScore !== null ? matchScore : '—'}</span>
-              <span className="compact-unit">{matchScore !== null ? '%' : ''}</span>
-            </div>
-            <div className="compact-sub">
-              <span>{reports.length === 1 ? 'Current Plan' : `Average across ${reports.length} roles`}</span>
-              <strong>{avgScore !== null ? `${avgScore}% Avg` : 'No data yet'}</strong>
-            </div>
-          </div>
-        </div>
-
-        {/* CARD 3: Question Bank Activity */}
-        <div className="bento-card bento-card--3d bento-card--compact">
-          <div className="card-header">
-            <div className="header-title">
-              <span className="icon-badge icon-badge--chat">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-              </span>
-              <span className="card-title-text">Curated Questions</span>
-            </div>
-          </div>
-
-          <div className="compact-metric-row">
-            <div className="compact-metric">
-              <span className="compact-value">{totalQuestions}</span>
-              <span className="compact-unit">Qs</span>
-            </div>
-            <div className="compact-sub">
-              <span>Model Answers Included</span>
-              <strong>{techCount} Tech · {behCount} Behavioral</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── RIGHT COLUMN: Real Diagnosis & Real Plans Trend ── */}
-      <div className="bento-right-col">
-        {/* CARD 4: Skill Gaps Diagnosis */}
-        <div className="bento-card bento-card--3d bento-card--wellness">
-          <div className="card-header">
-            <div className="header-title">
-              <span className="icon-badge icon-badge--percent">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </span>
-              <span className="card-title-text">Skill Gap Breakdown</span>
-            </div>
-            <span className="trend-badge trend-badge--lime">{skillGaps.length} Gaps</span>
-          </div>
-
-          <div className="wellness-content">
-            <div className="wellness-headline">
-              <div className="wellness-val-row">
-                <span className="wellness-val">{roadmapDays}</span>
-                <span className="wellness-pct">Days</span>
-              </div>
-              <span className="metric-caption">{totalTasks} Actionable Roadmap Tasks</span>
-            </div>
-
-            {/* Severity Pill Badges */}
-            <div className="real-gaps-badge-row">
-              <span className="gap-stat-pill gap-stat-pill--high">{highGaps} High Priority</span>
-              <span className="gap-stat-pill gap-stat-pill--med">{medGaps} Medium</span>
-              <span className="gap-stat-pill gap-stat-pill--low">{lowGaps} Low</span>
-            </div>
-          </div>
-        </div>
-
-        {/* CARD 5: Saved Interview Plans Performance (Contrast 3D Dark Card) */}
-        <div className="bento-card bento-card--3d bento-card--sleep">
-          <div className="sleep-header">
-            <div className="sleep-title-wrap">
-              <span className="icon-badge icon-badge--brain">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                </svg>
-              </span>
-              <span className="sleep-title-text">Plan History & Scores</span>
-            </div>
-            <span className="saved-plans-badge">{reports.length} {reports.length === 1 ? 'Plan' : 'Plans'}</span>
-          </div>
-
-          {/* Dual Metrics From Real Data */}
-          <div className="sleep-metrics-row">
-            <div className="sleep-metric-col">
-              <div className="metric-val-wrap">
-                <span className="bar-indicator bar-indicator--lime" />
-                <span className="sleep-big-val">
-                  {matchScore !== null ? `${matchScore}%` : '—'}
-                </span>
-              </div>
-              <span className="sleep-metric-label">Latest Match</span>
-            </div>
-
-            <div className="sleep-metric-col">
-              <div className="metric-val-wrap">
-                <span className="bar-indicator bar-indicator--purple" />
-                <span className="sleep-big-val">{roadmapDays ? `${roadmapDays}d` : '—'}</span>
-              </div>
-              <span className="sleep-metric-label">Prep Roadmap</span>
-            </div>
-          </div>
-
-          {/* Real Bar Chart: One Bar for Each Actual Saved Plan */}
-          <div className="real-plans-chart">
-            {hasReports ? (
-              <div className="reports-bar-track">
-                {reports.slice(0, 5).map((r, idx) => (
-                  <div key={r._id || idx} className="report-bar-item" title={`${r.title || 'Role'}: ${r.matchScore}%`}>
-                    <div className="bar-column-wrap">
-                      <div
-                        className={`plan-bar ${idx === 0 ? 'plan-bar--active' : 'plan-bar--subtle'}`}
-                        style={{ height: `${Math.max(r.matchScore || 15, 20)}%` }}
-                      />
-                    </div>
-                    <span className="plan-bar-label">
-                      {r.title ? (r.title.length > 7 ? `${r.title.slice(0, 6)}…` : r.title) : `Plan ${idx + 1}`}
-                    </span>
-                    <strong className="plan-bar-score">{r.matchScore}%</strong>
+          ) : (
+            <div className="plans-numbered-list">
+              {recentPlans.map((report, idx) => (
+                <Link
+                  key={report._id || idx}
+                  to={`/interview/${report._id}`}
+                  className="plan-numbered-item"
+                  title="Open preparation plan"
+                >
+                  <div className="item-number-circle">
+                    {idx + 1}.
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="empty-chart-state">
-                <p>No interview reports saved yet. Create a plan to track role scores over time.</p>
-              </div>
-            )}
+                  <div className="item-info">
+                    <span className="item-company-role">
+                      {report.title || 'Untitled Opportunity'}
+                    </span>
+                    <span className="item-date">
+                      {report.createdAt
+                        ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(report.createdAt))
+                        : 'Saved plan'}
+                    </span>
+                  </div>
+
+                  <div className="item-right-meta">
+                    {Number.isFinite(report.matchScore) && (
+                      <span className="item-score-pill">
+                        {report.matchScore}% match
+                      </span>
+                    )}
+                    <span className="item-arrow-symbol">↗</span>
+                  </div>
+                </Link>
+              ))}
+
+              {reports.length > 5 && (
+                <button
+                  type="button"
+                  className="dash-view-more-link"
+                  onClick={() => {
+                    const el = document.getElementById('saved-plans-section');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  View all {reports.length} saved plans ↓
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── RIGHT CARD: Recently Applied Applications ── */}
+      <div className="bento-card bento-card--3d dashboard-card-half">
+        <div className="dash-card-header">
+          <div className="dash-title-group">
+            <span className="dash-icon-badge dash-icon-badge--apps">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+            </span>
+            <div>
+              <h2 className="dash-card-title">Recently Applied Applications</h2>
+              <span className="dash-card-sub">Latest tracked job applications</span>
+            </div>
           </div>
+
+          <Link to="/applications" className="show-more-capsule-link" title="Open Application Tracker">
+            Show More ↗
+          </Link>
+        </div>
+
+        <div className="dash-card-body">
+          {appsLoading ? (
+            <div className="dash-loading-content">
+              <span className="spinner" />
+              <p>Loading applications...</p>
+            </div>
+          ) : recentApps.length === 0 ? (
+            <div className="dash-empty-content">
+              <div className="dash-empty-icon">💼</div>
+              <h4>No applications tracked yet</h4>
+              <p>Keep track of companies, roles, application dates, and hiring statuses.</p>
+              <button
+                type="button"
+                className="dash-action-btn"
+                onClick={() => navigate('/applications')}
+              >
+                + Track First Application
+              </button>
+            </div>
+          ) : (
+            <div className="recent-apps-table-wrap">
+              <table className="mini-apps-table">
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>Role</th>
+                    <th>Date Applied</th>
+                    <th className="text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentApps.map((app) => (
+                    <tr
+                      key={app._id}
+                      className="mini-app-row"
+                      onClick={() => navigate('/applications')}
+                      title="Click to view in Application Tracker"
+                    >
+                      <td className="company-col">
+                        <div className="company-mini-meta">
+                          <span className="company-avatar-char">
+                            {(app.company || 'C').slice(0, 1).toUpperCase()}
+                          </span>
+                          <span className="company-name-bold">{app.company}</span>
+                        </div>
+                      </td>
+                      <td className="role-col">
+                        <span className="role-name-text">{app.role}</span>
+                      </td>
+                      <td className="date-col">
+                        {app.dateApplied
+                          ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(app.dateApplied))
+                          : '—'}
+                      </td>
+                      <td className="status-col text-right">
+                        <span className={`status-badge-compact ${getStatusClass(app.status)}`}>
+                          {app.status || 'Applied'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {totalAppsCount > 5 && (
+                <div className="dash-table-footer">
+                  <span className="footer-count-text">
+                    Showing 5 of {totalAppsCount} applications
+                  </span>
+                  <Link to="/applications" className="footer-more-link">
+                    Show More ({totalAppsCount - 5} more) ↗
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }

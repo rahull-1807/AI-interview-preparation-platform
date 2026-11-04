@@ -13,14 +13,15 @@ app.get('/api/health', (req, res) => {
     res.status(connected ? 200 : 503).json({ status: connected ? 'ok' : 'database unavailable' });
 });
 
-
 // require all the routes here 
 const authRouter = require('./routes/auth.routes');
 const interviewRouter = require('./routes/interview.routes');
+const applicationRouter = require('./routes/application.routes');
 
 // using the router here
-app.use('/api/auth', authRouter)
-app.use('/api/interview', interviewRouter)
+app.use('/api/auth', authRouter);
+app.use('/api/interview', interviewRouter);
+app.use('/api/applications', applicationRouter);
 
 app.use('/api', (req, res) => {
     res.status(404).json({ message: 'API endpoint not found' });
